@@ -1,1 +1,13 @@
+import pandas as pd
 
+def daily_leads_and_partners(daily_sales: pd.DataFrame) -> pd.DataFrame:
+    if daily_sales.empty:  # Handle case where there's no data
+        return pd.DataFrame(columns=["date_id", "make_name", "unique_leads", "unique_partners"])
+
+    # Group by date_id and make_name, and count unique leads and partners
+    result = daily_sales.groupby(["date_id", "make_name"]).agg(
+        unique_leads=("lead_id", "nunique"),
+        unique_partners=("partner_id", "nunique")
+    ).reset_index()
+
+    return result

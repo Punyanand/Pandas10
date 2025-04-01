@@ -1,1 +1,13 @@
+import pandas as pd
 
+def categorize_products(activities: pd.DataFrame) -> pd.DataFrame:
+    if activities.empty:  # Handle case where there's no data
+        return pd.DataFrame(columns=["sell_date", "num_sold", "products"])
+
+    # Group by sell_date and compute required fields
+    result = activities.groupby("sell_date").agg(
+        num_sold=("product", "nunique"),  # Count unique products
+        products=("product", lambda x: ",".join(sorted(x.unique())))  # Sort and join product names
+    ).reset_index()
+
+    return result

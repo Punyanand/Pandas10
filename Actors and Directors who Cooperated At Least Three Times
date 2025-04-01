@@ -1,1 +1,24 @@
+import pandas as pd
+
+def actors_and_directors(actor_director: pd.DataFrame) -> pd.DataFrame:
+    #long version - have a dcitionary in place where actor id and director id are stored in form of tuple
+
+    # dict = {}
+    # for i in range(len(actor_director)):
+    #     a_id = actor_director['actor_id'][i]
+    #     d_id = actor_director['director_id'][i]
+    #     if (a_id,d_id) not in dict:
+    #         dict[(a_id,d_id)] =0
+    #     dict[(a_id,d_id)] +=1
+
+    # result =[]
+    # for key,value in dict.items():
+    #     if value >=3:
+    #         result.append(key)
+    # return pd.DataFrame(result, columns = ['actor_id','director_id'])
+
+    #pandas solution 
+     df = actor_director.groupby(['actor_id','director_id']).size().reset_index(name='count')
+     return df[df['count'] >= 3][['actor_id', 'director_id']]
+
 
